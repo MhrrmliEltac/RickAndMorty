@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:rick_and_morty/app/locator.dart';
 import 'package:rick_and_morty/app/router.dart';
 import 'package:rick_and_morty/models/characters_model.dart';
+import 'package:rick_and_morty/services/api_preferences.dart';
 
 class CharacterCardview extends StatefulWidget {
   final CharactersModel charactersModel;
-  final VoidCallback onLoadMore;
-  final ScrollController scrollController;
+  final VoidCallback? onLoadMore;
+  final ScrollController? scrollController;
+  final bool isFavorited;
 
   const CharacterCardview({
     super.key,
     required this.charactersModel,
-    required this.onLoadMore,
-    required this.scrollController,
+    this.onLoadMore,
+    this.scrollController,
+    this.isFavorited = false,
   });
 
   @override
@@ -20,21 +24,38 @@ class CharacterCardview extends StatefulWidget {
 }
 
 class _CharacterCardviewState extends State<CharacterCardview> {
+  late bool isFavorited;
+
   @override
   void initState() {
     super.initState();
+    isFavorited = widget.isFavorited;
     _detectScrollBottom();
   }
 
   void _detectScrollBottom() {
-    widget.scrollController.addListener(() {
-      final maxScroll = widget.scrollController.position.maxScrollExtent;
-      final currentPosition = widget.scrollController.position.pixels;
+    widget.scrollController?.addListener(() {
+      final maxScroll = widget.scrollController!.position.maxScrollExtent;
+      final currentPosition = widget.scrollController!.position.pixels;
       const int delta = 200;
       if (maxScroll - currentPosition <= delta) {
-        widget.onLoadMore();
+        if (widget.onLoadMore != null) {
+          widget.onLoadMore!();
+        }
       }
     });
+  }
+
+  void _favoriteCharacter() {
+    if (isFavorited) {
+      locator<ApiPreferences>().removeCharacter(widget.charactersModel.id);
+      isFavorited = false;
+    } else {
+      locator<ApiPreferences>().saveCharacter(widget.charactersModel.id);
+      isFavorited = true;
+    }
+
+    setState(() {});
   }
 
   @override
@@ -102,8 +123,11 @@ class _CharacterCardviewState extends State<CharacterCardview> {
             ),
             IconButton(
               padding: EdgeInsets.zero,
-              onPressed: () {},
-              icon: Icon(Icons.bookmark_border),
+              onPressed: _favoriteCharacter,
+              icon:
+                  isFavorited
+                      ? Icon(Icons.bookmark)
+                      : Icon(Icons.bookmark_border),
             ),
           ],
         ),

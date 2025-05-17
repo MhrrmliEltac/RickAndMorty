@@ -7,6 +7,7 @@ import 'package:rick_and_morty/views/screens/characterinfo_view/characterinfo_vi
 import 'package:rick_and_morty/views/screens/characters_view/characters_view.dart';
 import 'package:rick_and_morty/views/screens/characters_view/characters_viewmodel.dart';
 import 'package:rick_and_morty/views/screens/favourites_view/favourites_view.dart';
+import 'package:rick_and_morty/views/screens/favourites_view/favourites_viewmodel.dart';
 import 'package:rick_and_morty/views/screens/locations_view/locations_view.dart';
 import 'package:rick_and_morty/views/screens/sections_view/sections_view.dart';
 
@@ -48,7 +49,9 @@ final router = GoRouter(
                   builder:
                       (context, state) => ChangeNotifierProvider(
                         create: (context) => CharacterInfoViewModel(),
-                        child: CharacterinfoView(id: (state.extra as int?) ?? 0),
+                        child: CharacterinfoView(
+                          id: (state.extra as int?) ?? 0,
+                        ),
                       ),
                 ),
               ],
@@ -59,7 +62,11 @@ final router = GoRouter(
           routes: [
             GoRoute(
               path: AppRoutes.favourites,
-              builder: (context, state) => const FavouritesView(),
+              builder:
+                  (context, state) => ChangeNotifierProvider(
+                    create: (context) => FavouritesViewmodel(),
+                    child: FavouritesView(),
+                  ),
             ),
           ],
         ),
