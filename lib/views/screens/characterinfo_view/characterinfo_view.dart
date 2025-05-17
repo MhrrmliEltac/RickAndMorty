@@ -130,13 +130,15 @@ class _CharacterinfoViewState extends State<CharacterinfoView> {
           child: CircleAvatar(
             radius: 98,
             backgroundColor: Theme.of(context).colorScheme.surface,
-            child: CircleAvatar(
-              radius: 95,
-              backgroundImage:
-                  characterInfo.character != null
-                      ? NetworkImage(characterInfo.character!.image)
-                      : null,
-            ),
+            child:
+                characterInfo.character != null
+                    ? CircleAvatar(
+                      radius: 95,
+                      backgroundImage: NetworkImage(
+                        characterInfo.character!.image,
+                      ),
+                    )
+                    : const CircularProgressIndicator(),
           ),
         ),
       ),

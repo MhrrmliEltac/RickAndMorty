@@ -3,8 +3,9 @@ import 'package:rick_and_morty/app/locator.dart';
 import 'package:rick_and_morty/app/router.dart';
 import 'package:rick_and_morty/app/theme.dart';
 
-void main() {
-  setupLocator();
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized(); // Bu, SharedPreferences üçün vacibdir
+  await setupLocator(); // await əlavə edildi
   runApp(MyApp());
 }
 
