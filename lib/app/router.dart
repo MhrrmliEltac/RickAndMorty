@@ -8,7 +8,9 @@ import 'package:rick_and_morty/views/screens/characters_view/characters_view.dar
 import 'package:rick_and_morty/views/screens/characters_view/characters_viewmodel.dart';
 import 'package:rick_and_morty/views/screens/favourites_view/favourites_view.dart';
 import 'package:rick_and_morty/views/screens/favourites_view/favourites_viewmodel.dart';
+import 'package:rick_and_morty/views/screens/locations_view/location_viewmodel.dart';
 import 'package:rick_and_morty/views/screens/locations_view/locations_view.dart';
+import 'package:rick_and_morty/views/screens/locationsinfo_view/locationinfo_view.dart';
 import 'package:rick_and_morty/views/screens/sections_view/sections_view.dart';
 
 final _routerKey = GlobalKey<NavigatorState>();
@@ -18,11 +20,13 @@ class AppRoutes {
 
   static const String characters = '/';
   static const String favourites = '/favourites';
-  static const String locations = '/locations';
   static const String sections = '/sections';
 
   static const String profileRoutes = "/characterInfo";
-  static const String characterProfile = "character";
+  // static const String characterProfile = "character";
+
+  static const String locationRoute = "/locationInfo";
+  static const String locations = '/locations';
 }
 
 final router = GoRouter(
@@ -74,7 +78,21 @@ final router = GoRouter(
           routes: [
             GoRoute(
               path: AppRoutes.locations,
-              builder: (context, state) => const LocationsView(),
+              builder:
+                  (context, state) => ChangeNotifierProvider(
+                    create: (context) => LocationViewmodel(),
+                    child: const LocationsView(),
+                  ),
+              routes: [
+                GoRoute(
+                  path: AppRoutes.locationRoute,
+                  builder:
+                      (context, state) => ChangeNotifierProvider(
+                        create: (context) => LocationViewmodel(),
+                        child: LocationInfoView(id: (state.extra as int?) ?? 0),
+                      ),
+                ),
+              ],
             ),
           ],
         ),

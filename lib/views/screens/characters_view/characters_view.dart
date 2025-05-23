@@ -48,6 +48,17 @@ class _CharactersViewState extends State<CharactersView> {
                                         .charactersModdel!
                                         .characters[index],
                               ),
+                              viewModel.charactersModdel!.characters.length -
+                                          1 ==
+                                      index
+                                  ? Padding(
+                                    padding: const EdgeInsets.only(bottom: 16),
+                                    child: Center(
+                                      child:
+                                          CircularProgressIndicator.adaptive(),
+                                    ),
+                                  )
+                                  : SizedBox(),
                             ],
                           ),
                     ),
