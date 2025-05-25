@@ -55,7 +55,9 @@ class _CharacterinfoViewState extends State<CharacterinfoView> {
                 characterInfo: characterInfo,
               ),
               const SizedBox(height: 38),
-              EpisodListWidget(episodes: characterInfo.episodes),
+              Expanded(
+                child: EpisodListWidget(episodes: characterInfo.episodes),
+              ),
             ],
           ),
         ),

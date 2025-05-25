@@ -30,15 +30,22 @@ class _FavouritesViewState extends State<FavouritesView> {
             child:
                 viewModel.characters.isEmpty
                     ? const CircularProgressIndicator.adaptive()
-                    : Column(
-                      children:
-                          viewModel.characters
-                              .map(
-                                (character) => CharacterCardview(
-                                  charactersModel: character,
-                                ),
-                              )
-                              .toList(),
+                    : ListView.builder(
+                      itemCount: viewModel.characters.length,
+                      padding: EdgeInsets.zero,
+                      shrinkWrap: true,
+                      physics: const BouncingScrollPhysics(),
+                      itemBuilder:
+                          (context, index) => Column(
+                            children:
+                                viewModel.characters
+                                    .map(
+                                      (character) => CharacterCardview(
+                                        charactersModel: character,
+                                      ),
+                                    )
+                                    .toList(),
+                          ),
                     ),
           ),
         ),

@@ -24,19 +24,23 @@ class LocationViewmodel extends ChangeNotifier {
   }
 
   void getLocationById(int? id) async {
-    _singleLocationModel = await _apiService.getSingleLocation(id: id);
-    _residentsIds =
-        _singleLocationModel!.residents
-            .map((e) => int.parse(e.split('/').last))
-            .toList();
-    if (_residentsIds.length == 1) {
-      _charactersByResidents = [
-        await _apiService.getSingleCharacter(id: _residentsIds[0]),
-      ];
-    } else {
-      _charactersByResidents = await _apiService.getMultipleCharacters(
-        _residentsIds,
-      );
+    try {
+      _singleLocationModel = await _apiService.getSingleLocation(id: id);
+      _residentsIds =
+          _singleLocationModel!.residents
+              .map((e) => int.parse(e.split('/').last))
+              .toList();
+      if (_residentsIds.length == 1) {
+        _charactersByResidents = [
+          await _apiService.getSingleCharacter(id: _residentsIds[0]),
+        ];
+      } else {
+        _charactersByResidents = await _apiService.getMultipleCharacters(
+          _residentsIds,
+        );
+      }
+    } catch (e) {
+      rethrow;
     }
     notifyListeners();
   }
@@ -47,7 +51,4 @@ class LocationViewmodel extends ChangeNotifier {
     _residentsIds = [];
     _charactersByResidents = [];
   }
-
-  
-
 }

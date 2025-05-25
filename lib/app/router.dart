@@ -11,6 +11,8 @@ import 'package:rick_and_morty/views/screens/favourites_view/favourites_viewmode
 import 'package:rick_and_morty/views/screens/locations_view/location_viewmodel.dart';
 import 'package:rick_and_morty/views/screens/locations_view/locations_view.dart';
 import 'package:rick_and_morty/views/screens/locationsinfo_view/locationinfo_view.dart';
+import 'package:rick_and_morty/views/screens/sectioninfo_view/sectioninfo_view.dart';
+import 'package:rick_and_morty/views/screens/sections_view/section_viewmodel.dart';
 import 'package:rick_and_morty/views/screens/sections_view/sections_view.dart';
 
 final _routerKey = GlobalKey<NavigatorState>();
@@ -27,6 +29,8 @@ class AppRoutes {
 
   static const String locationRoute = "/locationInfo";
   static const String locations = '/locations';
+
+  static const String sectionInfo = "/sectionInfo";
 }
 
 final router = GoRouter(
@@ -100,7 +104,21 @@ final router = GoRouter(
           routes: [
             GoRoute(
               path: AppRoutes.sections,
-              builder: (context, state) => const SectionsView(),
+              builder:
+                  (context, state) => ChangeNotifierProvider(
+                    create: (context) => SectionViewModel(),
+                    child: SectionsView(),
+                  ),
+              routes: [
+                GoRoute(
+                  path: AppRoutes.sectionInfo,
+                  builder:
+                      (context, state) => ChangeNotifierProvider(
+                        create: (context) => SectionViewModel(),
+                        child: SectionInfoView(id: (state.extra as int?) ?? 0),
+                      ),
+                ),
+              ],
             ),
           ],
         ),

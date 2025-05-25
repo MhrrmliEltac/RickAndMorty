@@ -46,7 +46,6 @@ class LocationListWidget extends StatelessWidget {
     return DecoratedContainer(
       topChild: Container(
         padding: EdgeInsets.symmetric(vertical: 50),
-        // alignment: Alignment.bottomCenter,
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage("assets/images/bg-image.png"),

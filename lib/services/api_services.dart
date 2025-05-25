@@ -36,6 +36,24 @@ class ApiServices {
     }
   }
 
+  Future<EpisodeResponse> getAllEpisodes({String? url}) async {
+    try {
+      final response = await _dio.get(url ?? '/episode');
+      return EpisodeResponse.fromJson(response.data);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<EpisodeModel> getSingleEpisode({required int? id}) async {
+    try {
+      final response = await _dio.get('/episode/${id.toString()}');
+      return EpisodeModel.fromJson(response.data);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<List<EpisodeModel>> getMultipleEpisode(List idList) async {
     try {
       final response = await _dio.get('/episode/$idList');

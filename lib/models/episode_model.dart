@@ -1,3 +1,43 @@
+class EpisodeResponse {
+  final EpisodeInfo info;
+  final List<EpisodeModel> results;
+
+  EpisodeResponse({required this.info, required this.results});
+
+  factory EpisodeResponse.fromJson(Map<String, dynamic> json) {
+    return EpisodeResponse(
+      info: EpisodeInfo.fromJson(json['info']),
+      results:
+          (json['results'] as List)
+              .map((e) => EpisodeModel.fromJson(e))
+              .toList(),
+    );
+  }
+}
+
+class EpisodeInfo {
+  final int count;
+  final int pages;
+  final String next;
+  final String? prev;
+
+  EpisodeInfo({
+    required this.count,
+    required this.pages,
+    required this.next,
+    this.prev,
+  });
+
+  factory EpisodeInfo.fromJson(Map<String, dynamic> json) {
+    return EpisodeInfo(
+      count: json['count'] ?? 0,
+      pages: json['pages'] ?? 0,
+      next: json['next'] ?? '',
+      prev: json['prev'],
+    );
+  }
+}
+
 class EpisodeModel {
   final int id;
   final String name;
